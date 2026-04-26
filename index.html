@@ -1,5 +1,6 @@
 <!DOCTYPE html><!--U3mhkPNVWO2DFMexNv3J8--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/e1a9d92d446e2cbd.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/840564badcbdbe5d.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/d55e6773d9ec3d8b.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/80b0597583911fcf.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/0b092717d54c5e40.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="https://chkstepan.com/_next/static/chunks/02bbe968ff5bb350.js"/><script src="https://chkstepan.com/_next/static/chunks/aee6c7720838f8a2.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/a7f539bf6487f4ff.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/turbopack-6020a10b5fb87a9b.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/877ada9911e439dd.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/03514ff7cb289924.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/ff1a16fafef87110.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/d2be314c3ece3fbe.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/66d380195c8ea130.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/152e538e78a5e47a.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/0cf40ffb4a98c7e5.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/748c9ed2947f80ce.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/839e2735bf51bbf7.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/d9686a4c1dbc8848.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/f9d07ad57ff8c010.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/8f4c43c2c2864f03.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/9a683b9529b4f912.js" async=""></script><meta name="google" content="notranslate"/><meta property="og:title" content="FinSaathi"/><meta property="og:site_name" content="FinSaathi"/><meta property="og:description" content="Creative studio crafting modern websites with clean design, smooth animations, and high-performance development, focused on creating immersive and high-end digital experiences."/><meta property="og:image" content="https://chkstepan.com/images/other/MetaLogo.webp"/><meta property="og:url" content="https://chkstepan.com/"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="FinSaathi"/><meta name="twitter:description" content="Creative studio crafting modern websites with clean design, smooth animations, and high-performance development, focused on creating immersive and high-end digital experiences."/><meta name="twitter:image" content="https://chkstepan.com/images/other/MetaLogo.webp"/><meta name="twitter:url" content="https://chkstepan.com/"/><link rel="canonical" href="https://chkstepan.com/"/><title>FinSaathi | Overview</title><meta name="description" content="Creative studio crafting modern websites with clean design, smooth animations, and high-performance development, focused on creating immersive and high-end digital experiences."/><link rel="author" href="https://chkstepan.com/"/><meta name="author" content="FinSaathi Team"/><meta name="keywords" content="FinSaathi,Chokobok,FinSaathi,FinSaathi Team,Chokobok FinSaathi,chk,Чокобок,Чокобок,Степан,Степан,Чокобок Степан,Чокобок Степан,stepan,portfolio,web,web development,React,Vercel,front-end developer,developer,front-end,JavaScript,TypeScript,chk developer,FinSaathi developer,FinSaathi front-end,FinSaathi React"/><meta name="robots" content="index, follow"/><link rel="canonical" href="https://chkstepan.com/"/><link rel="icon" href="https://chkstepan.com/favicon.ico?favicon.1edf4f58.ico" sizes="256x256" type="image/x-icon"/><link rel="icon" href="https://chkstepan.com/icon.png?icon.9bc81fd7.png" sizes="1058x1058" type="image/png"/><link rel="apple-touch-icon" href="https://chkstepan.com/apple-icon.png?apple-icon.5a92b177.png" sizes="1222x1222" type="image/png"/><script src="https://chkstepan.com/_next/static/chunks/a6dad97d9634a72d.js" noModule=""></script>
     <script>
+        // Clean up watermarks and stuck loaders
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
@@ -14,7 +15,20 @@
         });
         observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
         
-        // Final sanity check for assets
+        window.addEventListener('DOMContentLoaded', () => {
+            // Force removal of stuck loaders after 2 seconds if they don't disappear
+            setTimeout(() => {
+                const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
+                loaders.forEach(el => {
+                    el.style.transition = 'opacity 0.8s ease';
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 800);
+                });
+                document.body.style.overflow = 'auto';
+            }, 1500);
+        });
+
+        // Link fix: Ensure the showcase link points to the local file
         window.addEventListener('load', () => {
             document.querySelectorAll('link, script, img').forEach(el => {
                 if (el.src && el.src.includes('FinSaathi.com')) el.src = el.src.replace('FinSaathi.com', 'FinSaathi.com');
@@ -23,6 +37,11 @@
         });
     </script>
     <style>
+        /* Force hide the loader if it hangs */
+        [class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"] {
+            pointer-events: none !important;
+        }
+        
         .showcase-link {
             position: fixed;
             bottom: 30px;

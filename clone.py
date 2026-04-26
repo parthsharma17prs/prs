@@ -9,8 +9,10 @@ def clone_website():
     html = re.sub(r'(src|href|srcset)="\/', r'\1="' + original_domain + '/', html)
     
     # 2. Inject MutationObserver and custom styles
+    # Added: Force hide the stuck 0% loader
     script_to_inject = """
     <script>
+        // Clean up watermarks and stuck loaders
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 mutation.addedNodes.forEach((node) => {
@@ -25,7 +27,20 @@ def clone_website():
         });
         observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
         
-        // Final sanity check for assets
+        window.addEventListener('DOMContentLoaded', () => {
+            // Force removal of stuck loaders after 2 seconds if they don't disappear
+            setTimeout(() => {
+                const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
+                loaders.forEach(el => {
+                    el.style.transition = 'opacity 0.8s ease';
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 800);
+                });
+                document.body.style.overflow = 'auto';
+            }, 1500);
+        });
+
+        // Link fix: Ensure the showcase link points to the local file
         window.addEventListener('load', () => {
             document.querySelectorAll('link, script, img').forEach(el => {
                 if (el.src && el.src.includes('FinSaathi.com')) el.src = el.src.replace('FinSaathi.com', 'chkstepan.com');
@@ -34,6 +49,11 @@ def clone_website():
         });
     </script>
     <style>
+        /* Force hide the loader if it hangs */
+        [class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"] {
+            pointer-events: none !important;
+        }
+        
         .showcase-link {
             position: fixed;
             bottom: 30px;
@@ -67,7 +87,6 @@ def clone_website():
     html = html.replace('</body>', showcase_html + '</body>')
 
     # 4. PROTECT ASSET URLS FROM REBRANDING
-    # We replace chkstepan.com with a temporary token
     html = html.replace('https://chkstepan.com', '___ASSET_DOMAIN___')
 
     # 5. Branded Replacements
