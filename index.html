@@ -1,6 +1,6 @@
 <!DOCTYPE html><!--U3mhkPNVWO2DFMexNv3J8--><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/e1a9d92d446e2cbd.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/840564badcbdbe5d.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/d55e6773d9ec3d8b.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/80b0597583911fcf.css" data-precedence="next"/><link rel="stylesheet" href="https://chkstepan.com/_next/static/chunks/0b092717d54c5e40.css" data-precedence="next"/><link rel="preload" as="script" fetchPriority="low" href="https://chkstepan.com/_next/static/chunks/02bbe968ff5bb350.js"/><script src="https://chkstepan.com/_next/static/chunks/aee6c7720838f8a2.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/a7f539bf6487f4ff.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/turbopack-6020a10b5fb87a9b.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/877ada9911e439dd.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/03514ff7cb289924.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/ff1a16fafef87110.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/d2be314c3ece3fbe.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/66d380195c8ea130.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/152e538e78a5e47a.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/0cf40ffb4a98c7e5.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/748c9ed2947f80ce.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/839e2735bf51bbf7.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/d9686a4c1dbc8848.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/f9d07ad57ff8c010.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/8f4c43c2c2864f03.js" async=""></script><script src="https://chkstepan.com/_next/static/chunks/9a683b9529b4f912.js" async=""></script><meta name="google" content="notranslate"/><meta property="og:title" content="chkstepan"/><meta property="og:site_name" content="chkstepan"/><meta property="og:description" content="Creative studio crafting modern websites with clean design, smooth animations, and high-performance development, focused on creating immersive and high-end digital experiences."/><meta property="og:image" content="https://chkstepan.com/images/other/MetaLogo.webp"/><meta property="og:url" content="https://chkstepan.com/"/><meta property="og:type" content="website"/><meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content="chkstepan"/><meta name="twitter:description" content="Creative studio crafting modern websites with clean design, smooth animations, and high-performance development, focused on creating immersive and high-end digital experiences."/><meta name="twitter:image" content="https://chkstepan.com/images/other/MetaLogo.webp"/><meta name="twitter:url" content="https://chkstepan.com/"/><link rel="canonical" href="https://chkstepan.com/"/><title>chkstepan | Overview</title><meta name="description" content="Creative studio crafting modern websites with clean design, smooth animations, and high-performance development, focused on creating immersive and high-end digital experiences."/><link rel="author" href="https://chkstepan.com/"/><meta name="author" content="Stepan Chokobok"/><meta name="keywords" content="chkstepan,Chokobok,Stepan,Stepan Chokobok,Chokobok Stepan,chk,Чокобок,Чокобок,Степан,Степан,Чокобок Степан,Чокобок Степан,stepan,portfolio,web,web development,React,Vercel,front-end developer,developer,front-end,JavaScript,TypeScript,chk developer,chkstepan developer,chkstepan front-end,chkstepan React"/><meta name="robots" content="index, follow"/><link rel="canonical" href="https://chkstepan.com/"/><link rel="icon" href="https://chkstepan.com/favicon.ico?favicon.1edf4f58.ico" sizes="256x256" type="image/x-icon"/><link rel="icon" href="https://chkstepan.com/icon.png?icon.9bc81fd7.png" sizes="1058x1058" type="image/png"/><link rel="apple-touch-icon" href="https://chkstepan.com/apple-icon.png?apple-icon.5a92b177.png" sizes="1222x1222" type="image/png"/><script src="https://chkstepan.com/_next/static/chunks/a6dad97d9634a72d.js" noModule=""></script>
     <script>
-        // 1. DYNAMIC REBRANDING (Text only, to avoid breaking scripts)
+        // Dynamic Branding
         function applyBranding() {
             const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let node;
@@ -13,61 +13,83 @@
                     .replace(/Romania/gi, 'India');
                 if (text !== newText) node.nodeValue = newText;
             }
-            
-            // Rebrand meta/title
             document.title = document.title.replace(/chkstepan/gi, 'FinSaathi');
         }
 
-        // 2. ANIMATION & LOADER FIX
-        // Force hide the original loader if it gets stuck
-        function killLoader() {
-            const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
-            if (loaders.length > 0) {
-                console.log("Removing stuck loader...");
-                loaders.forEach(el => {
-                    el.style.transition = 'opacity 1s ease';
-                    el.style.opacity = '0';
-                    setTimeout(() => el.remove(), 1000);
-                });
-                document.body.style.overflow = 'auto';
-            }
+        // Custom Cursor
+        function initCursor() {
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
         }
 
-        // 3. INJECT SHOWCASE BUTTON
-        function injectShowcase() {
-            if (document.querySelector('.showcase-link')) return;
+        // Kill Loader
+        function killLoader() {
+            const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
+            loaders.forEach(el => {
+                el.style.transition = 'opacity 1s ease';
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 1000);
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyBranding();
+            initCursor();
+            setTimeout(killLoader, 2000);
+            
+            // Inject Showcase link
             const link = document.createElement('a');
             link.className = 'showcase-link';
             link.href = 'projects.html';
             link.innerHTML = '<span>Explore Projects</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
             document.body.appendChild(link);
-        }
-
-        // Run logic
-        window.addEventListener('DOMContentLoaded', () => {
-            applyBranding();
-            injectShowcase();
-            // Wait for Framer to hopefully finish, then kill loader if it didn't
-            setTimeout(killLoader, 2500);
         });
 
-        // Continuous observer for dynamic content
-        const observer = new MutationObserver((mutations) => {
-            applyBranding();
-            // Hunt watermarks
-            mutations.forEach(m => {
-                m.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) {
-                        if (node.innerText && node.innerText.includes("Made in Framer")) node.remove();
-                        if (node.id === "awwwards") node.remove();
-                    }
-                });
-            });
-        });
+        const observer = new MutationObserver(() => applyBranding());
         observer.observe(document.body, { childList: true, subtree: true });
     </script>
     <style>
-        /* Premium Showcase Link */
+        /* Exact Same 2 Same Premium Overlays */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 999999;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #729e84;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+
+        a:hover ~ .custom-cursor, 
+        button:hover ~ .custom-cursor {
+            width: 40px;
+            height: 40px;
+            background: rgba(114, 158, 132, 0.2);
+            backdrop-filter: blur(4px);
+        }
+
         .showcase-link {
             position: fixed;
             bottom: 30px;
@@ -78,21 +100,19 @@
             padding: 12px 24px;
             border-radius: 50px;
             text-decoration: none !important;
-            font-family: sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
         }
         .showcase-link:hover {
             transform: translateY(-5px) scale(1.05);
             background: #84b096;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
-        /* Hide watermarks via CSS as fallback */
+
         #awwwards, [class*="badge"], [class*="watermark"] {
             display: none !important;
         }

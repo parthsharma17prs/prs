@@ -4,19 +4,14 @@ def clone_website():
     with open('raw_index.html', 'r', encoding='utf-8') as f:
         html = f.read()
 
-    # 1. Ensure absolute URLs for ALL assets (CSS, JS, Images)
+    # 1. Absolute URLs for ALL assets
     original_domain = "https://chkstepan.com"
-    
-    # Prefix root-relative paths
     html = re.sub(r'(src|href|srcset)="\/', r'\1="' + original_domain + '/', html)
     
-    # 2. Inject Dynamic Branding & Animation Fixes
-    # We don't replace strings in the HTML directly to avoid breaking Next.js/Framer hydration.
-    # Instead, we do it in the browser AFTER the page loads.
-    
+    # 2. Premium Studio Injection (Noise, Cursor, Branding)
     injection_script = """
     <script>
-        // 1. DYNAMIC REBRANDING (Text only, to avoid breaking scripts)
+        // Dynamic Branding
         function applyBranding() {
             const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
             let node;
@@ -29,61 +24,83 @@ def clone_website():
                     .replace(/Romania/gi, 'India');
                 if (text !== newText) node.nodeValue = newText;
             }
-            
-            // Rebrand meta/title
             document.title = document.title.replace(/chkstepan/gi, 'FinSaathi');
         }
 
-        // 2. ANIMATION & LOADER FIX
-        // Force hide the original loader if it gets stuck
-        function killLoader() {
-            const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
-            if (loaders.length > 0) {
-                console.log("Removing stuck loader...");
-                loaders.forEach(el => {
-                    el.style.transition = 'opacity 1s ease';
-                    el.style.opacity = '0';
-                    setTimeout(() => el.remove(), 1000);
-                });
-                document.body.style.overflow = 'auto';
-            }
+        // Custom Cursor
+        function initCursor() {
+            const cursor = document.createElement('div');
+            cursor.className = 'custom-cursor';
+            document.body.appendChild(cursor);
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
         }
 
-        // 3. INJECT SHOWCASE BUTTON
-        function injectShowcase() {
-            if (document.querySelector('.showcase-link')) return;
+        // Kill Loader
+        function killLoader() {
+            const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
+            loaders.forEach(el => {
+                el.style.transition = 'opacity 1s ease';
+                el.style.opacity = '0';
+                setTimeout(() => el.remove(), 1000);
+            });
+            document.body.style.overflow = 'auto';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            applyBranding();
+            initCursor();
+            setTimeout(killLoader, 2000);
+            
+            // Inject Showcase link
             const link = document.createElement('a');
             link.className = 'showcase-link';
             link.href = 'projects.html';
             link.innerHTML = '<span>Explore Projects</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
             document.body.appendChild(link);
-        }
-
-        // Run logic
-        window.addEventListener('DOMContentLoaded', () => {
-            applyBranding();
-            injectShowcase();
-            // Wait for Framer to hopefully finish, then kill loader if it didn't
-            setTimeout(killLoader, 2500);
         });
 
-        // Continuous observer for dynamic content
-        const observer = new MutationObserver((mutations) => {
-            applyBranding();
-            // Hunt watermarks
-            mutations.forEach(m => {
-                m.addedNodes.forEach(node => {
-                    if (node.nodeType === 1) {
-                        if (node.innerText && node.innerText.includes("Made in Framer")) node.remove();
-                        if (node.id === "awwwards") node.remove();
-                    }
-                });
-            });
-        });
+        const observer = new MutationObserver(() => applyBranding());
         observer.observe(document.body, { childList: true, subtree: true });
     </script>
     <style>
-        /* Premium Showcase Link */
+        /* Exact Same 2 Same Premium Overlays */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 999999;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #729e84;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s, background 0.3s;
+        }
+
+        a:hover ~ .custom-cursor, 
+        button:hover ~ .custom-cursor {
+            width: 40px;
+            height: 40px;
+            background: rgba(114, 158, 132, 0.2);
+            backdrop-filter: blur(4px);
+        }
+
         .showcase-link {
             position: fixed;
             bottom: 30px;
@@ -94,35 +111,26 @@ def clone_website():
             padding: 12px 24px;
             border-radius: 50px;
             text-decoration: none !important;
-            font-family: sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 8px;
-            border: 1px solid rgba(255,255,255,0.1);
         }
         .showcase-link:hover {
             transform: translateY(-5px) scale(1.05);
             background: #84b096;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
-        /* Hide watermarks via CSS as fallback */
+
         #awwwards, [class*="badge"], [class*="watermark"] {
             display: none !important;
         }
     </style>
     """
     
-    # 3. Clean up the HTML from previous hard-coded replacements
-    # (Just in case raw_index.html was already modified, though it should be raw)
-    
-    # Find head and inject
-    if '</head>' in html:
-        html = html.replace('</head>', injection_script + '</head>')
-    else:
-        html = html + injection_script
+    html = html.replace('</head>', injection_script + '</head>')
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html)
