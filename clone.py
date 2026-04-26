@@ -4,56 +4,86 @@ def clone_website():
     with open('raw_index.html', 'r', encoding='utf-8') as f:
         html = f.read()
 
-    # 1. Rewrite all absolute-path links to point to the original domain
+    # 1. Ensure absolute URLs for ALL assets (CSS, JS, Images)
     original_domain = "https://chkstepan.com"
+    
+    # Prefix root-relative paths
     html = re.sub(r'(src|href|srcset)="\/', r'\1="' + original_domain + '/', html)
     
-    # 2. Inject MutationObserver and custom styles
-    # Added: Force hide the stuck 0% loader
-    script_to_inject = """
+    # 2. Inject Dynamic Branding & Animation Fixes
+    # We don't replace strings in the HTML directly to avoid breaking Next.js/Framer hydration.
+    # Instead, we do it in the browser AFTER the page loads.
+    
+    injection_script = """
     <script>
-        // Clean up watermarks and stuck loaders
+        // 1. DYNAMIC REBRANDING (Text only, to avoid breaking scripts)
+        function applyBranding() {
+            const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walk.nextNode()) {
+                const text = node.nodeValue;
+                const newText = text
+                    .replace(/chkstepan/gi, 'FinSaathi')
+                    .replace(/Stepan Chokobok/gi, 'FinSaathi Team')
+                    .replace(/Stepan/gi, 'FinSaathi')
+                    .replace(/Romania/gi, 'India');
+                if (text !== newText) node.nodeValue = newText;
+            }
+            
+            // Rebrand meta/title
+            document.title = document.title.replace(/chkstepan/gi, 'FinSaathi');
+        }
+
+        // 2. ANIMATION & LOADER FIX
+        // Force hide the original loader if it gets stuck
+        function killLoader() {
+            const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
+            if (loaders.length > 0) {
+                console.log("Removing stuck loader...");
+                loaders.forEach(el => {
+                    el.style.transition = 'opacity 1s ease';
+                    el.style.opacity = '0';
+                    setTimeout(() => el.remove(), 1000);
+                });
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // 3. INJECT SHOWCASE BUTTON
+        function injectShowcase() {
+            if (document.querySelector('.showcase-link')) return;
+            const link = document.createElement('a');
+            link.className = 'showcase-link';
+            link.href = 'projects.html';
+            link.innerHTML = '<span>Explore Projects</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            document.body.appendChild(link);
+        }
+
+        // Run logic
+        window.addEventListener('DOMContentLoaded', () => {
+            applyBranding();
+            injectShowcase();
+            // Wait for Framer to hopefully finish, then kill loader if it didn't
+            setTimeout(killLoader, 2500);
+        });
+
+        // Continuous observer for dynamic content
         const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
+            applyBranding();
+            // Hunt watermarks
+            mutations.forEach(m => {
+                m.addedNodes.forEach(node => {
                     if (node.nodeType === 1) {
-                        const watermarkTexts = ["Framer", "Awwwards", "Made in Framer"];
-                        if (node.id === "awwwards" || (node.innerText && watermarkTexts.some(text => node.innerText.includes(text)))) {
-                            node.remove();
-                        }
+                        if (node.innerText && node.innerText.includes("Made in Framer")) node.remove();
+                        if (node.id === "awwwards") node.remove();
                     }
                 });
             });
         });
-        observer.observe(document.body || document.documentElement, { childList: true, subtree: true });
-        
-        window.addEventListener('DOMContentLoaded', () => {
-            // Force removal of stuck loaders after 2 seconds if they don't disappear
-            setTimeout(() => {
-                const loaders = document.querySelectorAll('[class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"]');
-                loaders.forEach(el => {
-                    el.style.transition = 'opacity 0.8s ease';
-                    el.style.opacity = '0';
-                    setTimeout(() => el.remove(), 800);
-                });
-                document.body.style.overflow = 'auto';
-            }, 1500);
-        });
-
-        // Link fix: Ensure the showcase link points to the local file
-        window.addEventListener('load', () => {
-            document.querySelectorAll('link, script, img').forEach(el => {
-                if (el.src && el.src.includes('FinSaathi.com')) el.src = el.src.replace('FinSaathi.com', 'chkstepan.com');
-                if (el.href && el.href.includes('FinSaathi.com')) el.href = el.href.replace('FinSaathi.com', 'chkstepan.com');
-            });
-        });
+        observer.observe(document.body, { childList: true, subtree: true });
     </script>
     <style>
-        /* Force hide the loader if it hangs */
-        [class*="Tuk-dW__wrapper"], [class*="Tuk-dW__grayBg"] {
-            pointer-events: none !important;
-        }
-        
+        /* Premium Showcase Link */
         .showcase-link {
             position: fixed;
             bottom: 30px;
@@ -78,34 +108,21 @@ def clone_website():
             background: #84b096;
             box-shadow: 0 15px 30px rgba(0,0,0,0.5);
         }
+        /* Hide watermarks via CSS as fallback */
+        #awwwards, [class*="badge"], [class*="watermark"] {
+            display: none !important;
+        }
     </style>
     """
-    html = html.replace('</head>', script_to_inject + '</head>')
-
-    # 3. Inject Project Showcase Link
-    showcase_html = '<a href="projects.html" class="showcase-link"><span>Explore Projects</span> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>'
-    html = html.replace('</body>', showcase_html + '</body>')
-
-    # 4. PROTECT ASSET URLS FROM REBRANDING
-    html = html.replace('https://chkstepan.com', '___ASSET_DOMAIN___')
-
-    # 5. Branded Replacements
-    replacements = {
-        'chkstepan': 'FinSaathi',
-        'Stepan Chokobok': 'FinSaathi Team',
-        'Stepan': 'FinSaathi',
-        'chkstepan11@gmail.com': 'contact@finsaathi.com',
-        'Romania': 'India',
-        'Europe, Romania': 'New Delhi, India',
-        'chkstepan.dev': 'finsaathi.com',
-        '©2026': '©2026 FinSaathi'
-    }
-
-    for old, new in replacements.items():
-        html = html.replace(old, new)
-
-    # Restore asset domain
-    html = html.replace('___ASSET_DOMAIN___', 'https://chkstepan.com')
+    
+    # 3. Clean up the HTML from previous hard-coded replacements
+    # (Just in case raw_index.html was already modified, though it should be raw)
+    
+    # Find head and inject
+    if '</head>' in html:
+        html = html.replace('</head>', injection_script + '</head>')
+    else:
+        html = html + injection_script
 
     with open('index.html', 'w', encoding='utf-8') as f:
         f.write(html)
